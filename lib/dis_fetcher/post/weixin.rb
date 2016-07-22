@@ -2,7 +2,7 @@
 # @Author: xhb
 # @Date:   2016-07-08 22:24:43
 # @Last Modified by:   xhb
-# @Last Modified time: 2016-07-18 23:41:28
+# @Last Modified time: 2016-07-22 23:00:05
 
 # 1.功能：把传送门上面的微信文章收集起来，然后自动更新到81kb上面去
 # 2.接口：
@@ -116,12 +116,20 @@ module DisFetcher
       end
 
       def insert_to_81kb(title, markdown_content)
+        # File.open("temp_txt.md", "a") do |f|
+        #   f.write("+++++++++\n")
+        #   f.write(title)
+        #   f.write("\n")
+        #   f.write(markdown_content)
+        #   f.write("\n")
+        #   f.write("---------\n")           
+        # end
         @api.post_to_81kb(WEIXIN_CATEGORY, title, markdown_content)
       end
 
       def post_all
         fetch_urls
-        @post_url_array.first(3).each do |e|
+        @post_url_array.each do |e|
           author = e[0][0]
           title  = e[1][0]
           post_url = e[1][1]
@@ -129,9 +137,13 @@ module DisFetcher
           like_count = e[4]
           
           first_line = POST_HEADER % [visit_count, like_count, author]
-          html = fetche_post(post_url)
-          markdown_content = convert_to_markdown(html, first_line)
-          insert_to_81kb(title, markdown_content)
+          begin
+            html = fetche_post(post_url)
+            markdown_content = convert_to_markdown(html, first_line)
+            insert_to_81kb(title, markdown_content)
+          rescue => e 
+            next
+          end
         end
       end
 
