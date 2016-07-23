@@ -27,3 +27,6 @@ every 1.days, :at => '2:00 am' do
   rake "insert_youku"
 end
 
+every 1.days, :at => '3:00 am' do
+  rake "delete_topics"
+end

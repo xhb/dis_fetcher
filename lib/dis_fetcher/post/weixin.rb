@@ -2,7 +2,7 @@
 # @Author: xhb
 # @Date:   2016-07-08 22:24:43
 # @Last Modified by:   xhb
-# @Last Modified time: 2016-07-22 23:00:05
+# @Last Modified time: 2016-07-24 00:46:10
 
 # 1.功能：把传送门上面的微信文章收集起来，然后自动更新到81kb上面去
 # 2.接口：
@@ -28,10 +28,6 @@ module DisFetcher
 
       #传送门最热微信地址
       PASSPORT_GATE_URL = "http://werank.cn/"
-      #81kb apikey
-      API_KEY_FOR_81KB = "429d092bd30164ff275ecb6f72486d68b5091e600a708fc8679ae0d5edee4077"
-      #81kb username
-      USER_NAME_FOR_81KB = "xier"
       
       POST_HEADER = "浏览量：%s &nbsp; 点赞量: %s &nbsp; 来源: %s &nbsp;"
 
@@ -77,16 +73,22 @@ module DisFetcher
       end
 
       def fetche_post(url)
-        response = Faraday.get(url)
-        case response.status
-        when 200
-          @html = response.body
-        when 301..302
-          @html = Faraday.get(response[:Location])
+        begin
+          response = Faraday.get(url)
+          case response.status
+          when 200
+            @html = response.body
+          when 301..302
+            @html = Faraday.get(response[:Location])
+          end
+          page = Nokogiri::HTML(@html)
+          post = page.css("#js_content").inner_html
+          return post
+        rescue => e 
+          p "fetche_post: "
+          p e.inspect
+          nil
         end
-        page = Nokogiri::HTML(@html)
-        post = page.css("#js_content").inner_html
-        return post
       end
 
       def convert_to_markdown(html, first_line="\n")
@@ -127,23 +129,20 @@ module DisFetcher
         @api.post_to_81kb(WEIXIN_CATEGORY, title, markdown_content)
       end
 
-      def post_all
+      def post_with_interval(counts ,interval)
         fetch_urls
-        @post_url_array.each do |e|
+        @post_url_array.first(counts).each do |e|
           author = e[0][0]
           title  = e[1][0]
           post_url = e[1][1]
           visit_count = e[3]
           like_count = e[4]
-          
-          first_line = POST_HEADER % [visit_count, like_count, author]
-          begin
-            html = fetche_post(post_url)
-            markdown_content = convert_to_markdown(html, first_line)
-            insert_to_81kb(title, markdown_content)
-          rescue => e 
-            next
-          end
+          first_line = POST_HEADER % [visit_count, like_count, author]          
+          html = fetche_post(post_url)
+          next if html.nil?
+          markdown_content = convert_to_markdown(html, first_line)
+          insert_to_81kb(title, markdown_content)
+          sleep interval
         end
       end
 
