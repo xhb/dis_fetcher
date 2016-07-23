@@ -2,7 +2,7 @@
 # @Author: xhb
 # @Date:   2016-07-14 23:04:57
 # @Last Modified by:   xhb
-# @Last Modified time: 2016-07-24 00:47:53
+# @Last Modified time: 2016-07-24 01:43:37
 
 require 'discourse_api'
 
@@ -77,6 +77,18 @@ module DisFetcher
       end
     end
 
+    def delete_topics_by_category(category)
+      list = @client.topics_by(USERNAME)
+      c_array = @client.categories.select { |e| e["name"] == category }
+      c_id = c_array.first["id"]
+      c_list = list.select{ |e| e["category_id"] == c_id }
+      c_list.each do |topic|
+        p "delete topic: #{category} -> #{topic['title']}"
+        @client.delete_topic(topic["id"]) rescue next
+        sleep 5
+      end
+    end
+
 
   end
 end
@@ -90,6 +102,8 @@ if $0 == __FILE__
   # api.write_records("你没", 121)
   # api.write_records("你没", 213)
   # api.write_records("你没", 113)
-  today = Time.now.strftime("%Y%m%d")
-  api.delete_topics_by_date(today)
+  # today = Time.now.strftime("%Y%m%d")
+  # api.delete_topics_by_date(today)
+  #api.delete_topics_by_category("看微信")
+  api.delete_topics_by_category("看视频")
 end
