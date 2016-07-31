@@ -7,7 +7,7 @@ require "dis_fetcher"
 desc "Auto fetch weixin post to 81kb.com"
 task :insert_weixin do
   weixin = DisFetcher::Post::Weixin.new
-  weixin.post_with_interval(80, 15.minutes)
+  weixin.post_with_interval(60, 15.minutes)
 end
 
 desc "Auto fetch youku video to 81kb.com"
@@ -15,7 +15,7 @@ task :insert_youku do
   youku = DisFetcher::Video::YouKu.new
   youku.fetch_youku_first_video
   youku.fetch_youku_first_page_self_make_video
-  youku.post_video_with_interval(80, 15.minutes)
+  youku.post_video_with_interval(60, 30.minutes)
 end
 
 desc "delete topics by date"

@@ -2,7 +2,7 @@
 # @Author: xhb
 # @Date:   2016-07-08 22:24:57
 # @Last Modified by:   xhb
-# @Last Modified time: 2016-07-24 00:46:27
+# @Last Modified time: 2016-07-31 22:10:03
 
 require 'nokogiri'
 require 'open-uri'
@@ -71,6 +71,7 @@ module DisFetcher
         @youku_video_links.first(counts).each do |link_info|
           markdown_content = convert_youku_info_to_markdown(link_info)
           insert_to_81kb(link_info[:title], markdown_content)
+          sleep interval
         end
       end
 

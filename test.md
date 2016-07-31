@@ -32,7 +32,7 @@
 
 ![](http://weicdn.81kb.com/mmbiz/xrFYciaHL08CjEQYb1Q9sC9UvmicMJNEVebjxdSJZrzNl9z19XKAU6dKzCZ6HjmtVkZfNVXCxoASuQFGIk7dsQAg/0?wx_fmt=jpeg)
 
-
+http://weicdn.81kb.com/mmbiz/FKTicNd1GokW0ovzzQZ5Jha7Hq4jpHabsUcfL5cFUlRgDq7fekDbBRXyHr4PfBC1Giaia7ZiamGCHZjCRt5fibyEzjA/0?wx_fmt=gif
 
 **中国政府：中国在南海的领土主权和海洋权益包括这些**
 

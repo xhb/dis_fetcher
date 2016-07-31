@@ -2,7 +2,7 @@
 # @Author: xhb
 # @Date:   2016-07-14 23:04:57
 # @Last Modified by:   xhb
-# @Last Modified time: 2016-07-24 01:43:37
+# @Last Modified time: 2016-07-31 21:56:03
 
 require 'discourse_api'
 
@@ -105,5 +105,6 @@ if $0 == __FILE__
   # today = Time.now.strftime("%Y%m%d")
   # api.delete_topics_by_date(today)
   #api.delete_topics_by_category("看微信")
-  api.delete_topics_by_category("看视频")
+  #api.delete_topics_by_category("看视频")
+  
 end
